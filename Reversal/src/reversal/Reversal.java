@@ -2,6 +2,10 @@ package reversal;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 
 /**
@@ -15,24 +19,72 @@ public class Reversal extends JFrame {
     int windowSize = 800;
     int gridSize = 10;
     int cellWidth = windowSize / gridSize;
-    boolean[][] cells1 = new boolean[windowSize / cellWidth][windowSize / cellWidth];
-    boolean[][] cells2 = new boolean[windowSize / cellWidth][windowSize / cellWidth];
     
+    int[] lastClicked = new int[2];
+    
+    boolean[][] cells = new boolean[windowSize / cellWidth][windowSize / cellWidth];
+    boolean up, down, left, right;
+        
     /**
      * @param title the game title
      */
     public Reversal(String title) {
         super(title);
+        
+        this.setBackground(Color.black);
+        this.setSize(windowSize, windowSize );
+        this.setUndecorated(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // If <ESCAPE> is pressed, exit the program
+                if (e.getKeyCode() == 27) {
+                    System.exit(0);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        
+        this.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                lastClicked[0] = e.getX();
+                lastClicked[1] = e.getY();
+                System.out.println("X: " + lastClicked[0] + "\t\tY: " + lastClicked[1]);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
     }
     
-    public void nextFrame() {
-        
-        
-        for (int i = 0; i < cells1.length; i++) {
-            System.arraycopy(cells2[i], 0, cells1[i], 0, cells1[i].length);
-        }
-    }
-    
+    /**
+     * 
+     * @param g graphics object
+     */
     @Override
     public void paint(Graphics g) {
 
@@ -42,7 +94,7 @@ public class Reversal extends JFrame {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 
-                if (cells1[i][j]) {
+                if (cells[i][j]) {
                     g.setColor(Color.white);
                     g.fillRect(xPos, yPos, cellWidth, cellWidth);
                 } else {
@@ -66,10 +118,6 @@ public class Reversal extends JFrame {
         
         Reversal game = new Reversal("Reversal");
         
-        game.setBackground(Color.black);
-        game.setSize(game.windowSize, game.windowSize );
-        game.setUndecorated(true);
-        game.setDefaultCloseOperation(EXIT_ON_CLOSE);
         game.setVisible(true);
     }
 }
