@@ -1,5 +1,6 @@
 package reversal;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -7,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
+
 
 /**
  * @author name1
@@ -22,8 +24,7 @@ public class Reversal extends JFrame {
     
     int[] lastClicked = new int[2];
     
-    boolean[][] cells = new boolean[windowSize / cellWidth][windowSize / cellWidth];
-    boolean up, down, left, right;
+    Boolean[][] cells = new Boolean[windowSize / cellWidth][windowSize / cellWidth];
         
     /**
      * @param title the game title
@@ -81,6 +82,23 @@ public class Reversal extends JFrame {
         });
     }
     
+    
+    public void reverse(int col, int row) {
+        try {
+            cells[row-1][col] = !cells[row-1][col];
+        } catch (Exception ignored) {}
+        try {
+            cells[row+1][col] = !cells[row+1][col];
+        } catch (Exception ignored) {}
+        try {
+            cells[row][col-1] = !cells[row][col-1];
+        } catch (Exception ignored) {}
+        try {
+            cells[row][col+1] = !cells[row][col+1];
+        } catch (Exception ignored) {}
+    }
+    
+    
     /**
      * 
      * @param g graphics object
@@ -110,6 +128,7 @@ public class Reversal extends JFrame {
             xPos = 0;
         }
     }
+    
     
     /**
      * @param args the command line arguments
