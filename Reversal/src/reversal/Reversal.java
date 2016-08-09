@@ -17,15 +17,13 @@ import javax.swing.JFrame;
 public class Reversal extends JFrame {
     
     boolean grid = true;
-    
     int windowSize = 800;
     int gridSize = 10;
     int cellWidth = windowSize / gridSize;
-    
     int[] lastClicked = new int[2];
+    boolean[][] cells = new boolean[windowSize / cellWidth][windowSize / cellWidth];
     
-    Boolean[][] cells = new Boolean[windowSize / cellWidth][windowSize / cellWidth];
-        
+    
     /**
      * @param title the game title
      */
@@ -41,7 +39,6 @@ public class Reversal extends JFrame {
             @Override
             public void keyTyped(KeyEvent e) {
             }
-
             @Override
             public void keyPressed(KeyEvent e) {
                 // If <ESCAPE> is pressed, exit the program
@@ -49,39 +46,33 @@ public class Reversal extends JFrame {
                     System.exit(0);
                 }
             }
-
             @Override
             public void keyReleased(KeyEvent e) {
             }
         });
         
         this.addMouseListener(new MouseListener() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 lastClicked[0] = e.getX();
                 lastClicked[1] = e.getY();
                 System.out.println("X: " + lastClicked[0] + "\t\tY: " + lastClicked[1]);
             }
-
             @Override
             public void mousePressed(MouseEvent e) {
             }
-
             @Override
             public void mouseReleased(MouseEvent e) {
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
             }
         });
     }
-    
+
     
     public void reverse(int col, int row) {
         try {
@@ -111,7 +102,6 @@ public class Reversal extends JFrame {
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                
                 if (cells[i][j]) {
                     g.setColor(Color.white);
                     g.fillRect(xPos, yPos, cellWidth, cellWidth);
@@ -134,9 +124,7 @@ public class Reversal extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
         Reversal game = new Reversal("Reversal");
-        
         game.setVisible(true);
     }
 }
