@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Random;
 import javax.swing.JFrame;
 
 
@@ -17,8 +18,9 @@ import javax.swing.JFrame;
 public class Reversal extends JFrame {
     
     boolean grid = true;
+    int difficulty = 5;
     int windowSize = 800;
-    int gridSize = 10;
+    int gridSize = 4;
     int cellWidth = windowSize / gridSize;
     int[] lastClicked = new int[2];
     boolean[][] cells = new boolean[windowSize / cellWidth][windowSize / cellWidth];
@@ -34,6 +36,7 @@ public class Reversal extends JFrame {
         this.setSize(windowSize, windowSize );
         this.setUndecorated(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         
         this.addKeyListener(new KeyListener() {
             @Override
@@ -54,15 +57,20 @@ public class Reversal extends JFrame {
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                lastClicked[0] = e.getX();
-                lastClicked[1] = e.getY();
-                System.out.println("X: " + lastClicked[0] + "\t\tY: " + lastClicked[1]);
             }
             @Override
             public void mousePressed(MouseEvent e) {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    int length = windowSize / gridSize;
+                    lastClicked[0] = (int) Math.floor(e.getX() / length);
+                    lastClicked[1] = (int) Math.floor(e.getY() / length);
+                    System.out.println("Col: " + lastClicked[0] + "\t\tRow: " + lastClicked[1]);
+                    
+                    reverse(lastClicked[0], lastClicked[1]);
+                }
             }
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -87,6 +95,35 @@ public class Reversal extends JFrame {
         try {
             cells[row][col+1] = !cells[row][col+1];
         } catch (Exception ignored) {}
+        repaint();
+    }
+    
+    
+    public void generate() {
+        Random random = new Random();
+        for (int i = 0; i < difficulty; i++) {
+            int col = random.nextInt(cells.length);
+            int row = random.nextInt(cells.length);
+            reverse(col, row);
+            sleep(100);
+        }
+    }
+    
+    
+    public boolean won() {
+        for (boolean[] cell : cells) {
+            for (boolean b : cell) {
+                if (b) return false;
+            }
+        }
+        return true;
+    }
+    
+    
+    public void sleep(int numMilliseconds) {
+        try {
+            Thread.sleep(numMilliseconds);
+        } catch (Exception ignored) {}
     }
     
     
@@ -100,9 +137,9 @@ public class Reversal extends JFrame {
         int xPos = 0;
         int yPos = 0;
 
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                if (cells[i][j]) {
+        for (int j = 0; j < gridSize; j++) {
+            for (int i = 0; i < gridSize; i++) {
+                if (cells[j][i]) {
                     g.setColor(Color.white);
                     g.fillRect(xPos, yPos, cellWidth, cellWidth);
                 } else {
@@ -126,5 +163,13 @@ public class Reversal extends JFrame {
     public static void main(String[] args) {
         Reversal game = new Reversal("Reversal");
         game.setVisible(true);
+        game.generate();
+        
+        while (true) {
+            if (game.won()) {
+                System.out.println("You won!");
+                break;
+            }
+        }
     }
 }
