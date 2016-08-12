@@ -19,9 +19,9 @@ public class Reversal extends JFrame {
     
     boolean grid = true;
     boolean generating = true;
-    int difficulty = 10;
+    int difficulty = 50;
     int windowSize = 481;
-    int gridSize = 5;
+    int gridSize = 10;
     int cellWidth = windowSize / gridSize;
     int[] lastClicked = new int[2];
     boolean[][] cells = new boolean[windowSize / cellWidth][windowSize / cellWidth];
@@ -107,8 +107,15 @@ public class Reversal extends JFrame {
             int col = random.nextInt(cells.length);
             int row = random.nextInt(cells.length);
             reverse(col, row);
-            sleep(100);
+            sleep(50);
         }
+        sleep(300);
+        for (int j = 0; j < gridSize; j++) {
+            for (int i = 0; i < gridSize; i++) {
+                cells[i][j] = !cells[i][j];
+            }
+        }
+        repaint();
         generating = false;
     }
     
@@ -116,7 +123,7 @@ public class Reversal extends JFrame {
     public boolean won() {
         for (boolean[] cell : cells) {
             for (boolean b : cell) {
-                if (b) return false;
+                if (!b) return false;
             }
         }
         return true;
@@ -143,7 +150,7 @@ public class Reversal extends JFrame {
         for (int j = 0; j < gridSize; j++) {
             for (int i = 0; i < gridSize; i++) {
                 if (cells[j][i]) {
-                    g.setColor(Color.WHITE);
+                    g.setColor(Color.GREEN);
                     g.fillRect(xPos, yPos, cellWidth, cellWidth);
                 } else {
                     g.setColor(Color.BLACK);
