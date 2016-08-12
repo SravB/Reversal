@@ -18,9 +18,10 @@ import javax.swing.JFrame;
 public class Reversal extends JFrame {
     
     boolean grid = true;
-    int difficulty = 5;
+    boolean generating = true;
+    int difficulty = 10;
     int windowSize = 481;
-    int gridSize = 10;
+    int gridSize = 5;
     int cellWidth = windowSize / gridSize;
     int[] lastClicked = new int[2];
     boolean[][] cells = new boolean[windowSize / cellWidth][windowSize / cellWidth];
@@ -63,7 +64,7 @@ public class Reversal extends JFrame {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+                if (e.getButton() == MouseEvent.BUTTON1 && !generating) {
                     int length = windowSize / gridSize;
                     lastClicked[0] = (int) Math.floor(e.getX() / length);
                     lastClicked[1] = (int) Math.floor(e.getY() / length);
@@ -83,6 +84,7 @@ public class Reversal extends JFrame {
 
     
     public void reverse(int col, int row) {
+        //cells[row][col] = !cells[row][col];
         try {
             cells[row-1][col] = !cells[row-1][col];
         } catch (Exception ignored) {}
@@ -107,6 +109,7 @@ public class Reversal extends JFrame {
             reverse(col, row);
             sleep(100);
         }
+        generating = false;
     }
     
     
